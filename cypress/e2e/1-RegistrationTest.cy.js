@@ -5,11 +5,9 @@ import popUpMessage from "../support/Pages for Registration and Login/PopUpMessa
 import mainPage from "../support/Pages for Registration and Login/MainPage";
 import loginPage from "../support/Pages for Registration and Login/LoginPage";
 
-user.email = faker.internet.email();
-user.password = faker.internet.password();
 
 describe('Registration', () => {
-   it('Fill in form and verify registration success', () => {
+   it('Positive test scenario', () => {
    cy.log('Open Main page');
    cy.visit('/');
 
@@ -21,11 +19,6 @@ describe('Registration', () => {
 
     cy.log('Open Registration page');
     registrationPage.visit();
-
-    cy.log('Check for Error message when required field left empty');
-    registrationPage.getEmailField().click();
-    registrationPage.getPasswordField().click();
-    registrationPage.getErrorMessage('contain', 'Please');
 
     cy.log('Fill in the Registration form');
     registrationPage.getEmailField().type(user.email).should('have.value', user.email);
@@ -42,7 +35,36 @@ describe('Registration', () => {
     registrationPage.getRegisterButton().click();
 
     })
-    it('Login page', () => {
+
+    it('Negative test scenario', () => {
+        cy.log('Open Main page');
+        cy.visit('/');
+
+        popUpMessage.closePopUp().click();
+        popUpMessage.acceptCookies().click();
+        mainPage.getAccountButton().click();
+        mainPage.getLoginButton().click();
+        mainPage.getNewCostumerButton().click();
+
+        cy.log('Open Registration page');
+        registrationPage.visit();
+
+        cy.log('Check for Error message when required field left empty');
+        registrationPage.getEmailField().click();
+        registrationPage.getPasswordField().type(user.password).should('have.value', user.password);
+        registrationPage.getConfirmedPasswordField().type(user.password).should('have.value', user.password);
+        registrationPage.getAdviceText().should('have.attr', 'aria-checked', 'false');
+        registrationPage.getSecurityQuestionDropdown().click();
+        registrationPage.getDropdownOption().contains('Name of your favorite pet?').click();
+        registrationPage.getSecurityAnswerField().type(`${user["security question"]}`);
+        registrationPage.getRegisterButton().should('exist').and('be.disabled');
+        registrationPage.getErrorMessage('contain', 'Please provide');
+
+    });
+});
+
+        describe('Login', () => {
+         it('Login user', () => {
         loginPage.visit();
         popUpMessage.closePopUp().click();
         popUpMessage.acceptCookies().click();
@@ -52,5 +74,5 @@ describe('Registration', () => {
 
         cy.log('Redirection to the Main Page and Basket should appear');
         mainPage.getBasketButton('contain', ' Your Basket');
-    });
+         });
 })

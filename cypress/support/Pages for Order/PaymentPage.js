@@ -15,10 +15,10 @@ class PaymentPage {
 
     }
     getExpiryMonthDropdown(){
-        return cy.get('select#mat-input-12');
+        return cy.get('select[id^="mat-input-"]').eq(0);
     }
     getExpiryYearDropdown(){
-        return cy.get('select#mat-input-13');
+        return cy.get('select[id^="mat-input-"]').eq(1);
     }
     getSubmitButton(){
         return cy.get('button#submitButton');

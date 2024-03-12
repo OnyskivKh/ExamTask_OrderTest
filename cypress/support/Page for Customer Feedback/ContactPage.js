@@ -10,7 +10,7 @@ class ContactPage {
         cy.visit('/contact');
     }
     getAuthorField(){
-        return cy.get('input#mat-input-3');
+        return cy.get('input[id^="mat-input-"]');
     }
     getCommentField(){
         return cy.get('textarea#comment');

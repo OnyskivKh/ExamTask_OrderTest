@@ -5,25 +5,25 @@ class AddressPage {
         cy.visit('/address/create');
     }
     getCountryField(){
-        return cy.get('input#mat-input-3');
+        return cy.get('input[id^="mat-input-"]').eq(1);
     }
     getNameField(){
-        return cy.get('input#mat-input-4');
+        return cy.get('input[id^="mat-input-"]').eq(2);
     }
     getPhoneField(){
-        return cy.get('input#mat-input-5');
+        return cy.get('input[id^="mat-input-"]').eq(3);
     }
     getZIPField(){
-        return cy.get('input#mat-input-6');
+        return cy.get('input[id^="mat-input-"]').eq(4);
     }
     getAddressField(){
         return cy.get('textarea#address');
     }
     getCityField(){
-        return cy.get('input#mat-input-8');
+        return cy.get('input[id^="mat-input-"]').eq(5);
     }
     getStateField(){
-        return cy.get('input#mat-input-9');
+        return cy.get('input[id^="mat-input-"]').eq(6);
     }
     getSubmitButton(){
         return cy.get('button#submitButton');

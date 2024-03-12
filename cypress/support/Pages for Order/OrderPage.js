@@ -13,7 +13,7 @@ class OrderPage {
     getMessageAboutItem(){
         return cy.get('span.mat-simple-snack-bar-content');
         //We are out of stock! Sorry for the inconvenience.
-        //Added another OWASP Juice Shop Sticker Single to basket.
+        //Placed OWASP Juice Shop Sticker Single into basket.
     }
     getSoldOutMark(){
         return cy.get('.ribbon span');

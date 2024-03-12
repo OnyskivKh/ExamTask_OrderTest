@@ -7,12 +7,29 @@ import loginPage from "../support/Pages for Registration and Login/LoginPage";
 import loginPageForgotPassword from "../support/Pages for Registration and Login/LoginPageForgotPassword";
 
 describe('Login positive scenario', () => {
-    it('Login page', () => {
-        loginPage.visit();
+    before('Registration', () => {
+        cy.visit('/');
 
-        cy.log('Close pop up window');
         popUpMessage.closePopUp().click();
         popUpMessage.acceptCookies().click();
+        mainPage.getAccountButton().click();
+        mainPage.getLoginButton().click();
+        mainPage.getNewCostumerButton().click();
+
+        cy.log('Open Registration page');
+        registrationPage.visit();
+
+        registrationPage.getEmailField().type(user.email).should('have.value', user.email);
+        registrationPage.getPasswordField().type(user.password).should('have.value', user.password);
+        registrationPage.getConfirmedPasswordField().type(user.password).should('have.value', user.password);
+        registrationPage.getSecurityQuestionDropdown().click();
+        registrationPage.getDropdownOption().contains('Name of your favorite pet?').click();
+        registrationPage.getSecurityAnswerField().type(`${user["security question"]}`);
+        registrationPage.getRegisterButton().click();
+    })
+
+    it('Login page', () => {
+        loginPage.visit();
 
         loginPage.getLoginButton().should('exist').and('be.disabled');
         loginPage.fillLoginFields(user.email, user.password);

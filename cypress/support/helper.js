@@ -2,6 +2,7 @@ import user from '../fixtures/user.json'
 import loginPage from "./Pages for Registration and Login/LoginPage";
 import {faker} from "@faker-js/faker";
 import contactPage from "./Page for Customer Feedback/ContactPage";
+
 export function fillLoginField(email = '', password = '') {
     cy.log('Fill in Login fields');
    email ? cy.get('input#email').type(user.email) : cy.log('username fields not filled');
@@ -39,7 +40,7 @@ export function confirmationOfID() {
         });
     });
 }
-function getUrlIdFromUrl(url) {
+export function getUrlIdFromUrl(url) {
     const params = url.split(/[?&]/);
     for (const param of params) {
         if (param.startsWith('id=')) {
@@ -49,39 +50,49 @@ function getUrlIdFromUrl(url) {
     return null;
 }
 
-export function solveChangingCaptcha(){
-contactPage.getCaptchaQuestion().then($input => {
-    const captchaText = $input.text();
-    const numbersAndOperators = captchaText.match(/-?\d+|[+*/-]/g);
+// export function solveCaptcha(){
+// contactPage.getCaptchaQuestion().then($input => {
+//     const captchaText = $input.text();
+//     const numbersAndOperators = captchaText.match(/-?\d+|[+*/-]/g);
+//
+//     let answer = parseInt(numbersAndOperators[0]);
+//     let currentOperator = null;
+//
+//     for (let i = 1; i < numbersAndOperators.length; i++) {
+//         const currentItem = numbersAndOperators[i];
+//         if (['*', '/'].includes(currentItem)) {
+//             currentOperator = currentItem;
+//         } else if (currentItem === '+' || currentItem === '-') {
+//             currentOperator = currentItem;
+//         } else {
+//             const operand = parseInt(currentItem);
+//             if (currentOperator === '*') {
+//                 answer *= operand;
+//             } else if (currentOperator === '/') {
+//                 answer /= operand;
+//             } else if (currentOperator === '+') {
+//                 answer += operand;
+//             } else if (currentOperator === '-') {
+//                 answer -= operand;
+//             }
+//         }
+//     }
+//
+//     contactPage.getCaptchaField().type(answer);
+//     contactPage.getSubmitButton().click();
+// })
+// }
+//
+export function solveCaptcha(){
+    contactPage.getCaptchaQuestion().then($input => {
+        const captchaText = $input.text();
 
-    let answer = parseInt(numbersAndOperators[0]);
-    let currentOperator = null;
+        const answer = eval(captchaText);
 
-    for (let i = 1; i < numbersAndOperators.length; i++) {
-        const currentItem = numbersAndOperators[i];
-        if (['*', '/'].includes(currentItem)) {
-            currentOperator = currentItem;
-        } else if (currentItem === '+' || currentItem === '-') {
-            currentOperator = currentItem;
-        } else {
-            const operand = parseInt(currentItem);
-            if (currentOperator === '*') {
-                answer *= operand;
-            } else if (currentOperator === '/') {
-                answer /= operand;
-            } else if (currentOperator === '+') {
-                answer += operand;
-            } else if (currentOperator === '-') {
-                answer -= operand;
-            }
-        }
-    }
-
-    contactPage.getCaptchaField().type(answer);
-    contactPage.getSubmitButton().click();
-})
+        contactPage.getCaptchaField().type(answer);
+        contactPage.getSubmitButton().click();
+    });
 }
-
 
 
 

@@ -8,29 +8,44 @@ import addressPage from "../support/Pages for Order/AddressFormPage"
 import selectAddressPage from "../support/Pages for Order/SelectAddressPage";
 import deliveryPage from "../support/Pages for Order/DeliveryPage";
 import paymentPage from "../support/Pages for Order/PaymentPage";
+import registrationPage from "../support/Pages for Registration and Login/RegistrationPage";
 describe('Search for item', () => {
-    beforeEach('Login ', () => {
-            orderPage.visit();
+    beforeEach('Registration ', () => {
+        cy.visit('/');
 
-            popUpMessage.closePopUp().click();
-            popUpMessage.acceptCookies().click();
+        popUpMessage.closePopUp().click();
+        popUpMessage.acceptCookies().click();
+        mainPage.getAccountButton().click();
+        mainPage.getLoginButton().click();
+        mainPage.getNewCostumerButton().click();
 
-            mainPage.getAccountButton().click();
-            mainPage.getLoginButton().click();
+        cy.log('Open Registration page');
+        registrationPage.visit();
 
-            loginPage.fillLoginFields(user.email, user.password);
-            loginPage.getLoginButton().click();
+        registrationPage.getEmailField().type(user.email).should('have.value', user.email);
+        registrationPage.getPasswordField().type(user.password).should('have.value', user.password);
+        registrationPage.getConfirmedPasswordField().type(user.password).should('have.value', user.password);
+        registrationPage.getSecurityQuestionDropdown().click();
+        registrationPage.getDropdownOption().contains('Name of your favorite pet?').click();
+        registrationPage.getSecurityAnswerField().type(`${user["security question"]}`);
+        registrationPage.getRegisterButton().click();
 
-            cy.log('Redirection to the Main Page and Basket should appear');
-            mainPage.getBasketButton('contain', 'Your Basket');
+        loginPage.visit();
+
+        loginPage.fillLoginFields(user.email, user.password);
+        loginPage.getLoginButton().click();
+
+        cy.log('Redirection to the Main Page and Basket should appear');
+        mainPage.getBasketButton('contain', 'Your Basket');
         });
+
     it('Search for existed item', () => {
         orderPage.visit();
 
         mainPage.getSearchBar().type('Sticker');
         mainPage.getSearchBarInputField().type("{enter}");
         orderPage.itemSearchMainPage('OWASP Juice Shop Sticker Single').then(() => {
-                orderPage.getMessageAboutItem().contains('Added another OWASP Juice Shop Sticker Single to basket.')
+                orderPage.getMessageAboutItem().contains('OWASP Juice Shop Sticker Single')
                 orderPage.getXButton().click();
                 mainPage.getBasketButton().click();
                 orderPage.getUserEmail().contains(user.email);
