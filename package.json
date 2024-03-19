@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "run": "npx cypress run"
+    "cypress": "npx cypress run",
+    "cy:run:allure" : "npx cypress run --env allure=true",
+    "allure:generate" : "allure generate --clean",
+    "allure:clear": "rm -rf allure-report allure-results cypress/screenshots cypress/videos/"
   },
   "author": "",
   "license": "ISC",
@@ -11,7 +14,12 @@
     "cypress": "^13.6.6"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.4.1"
+    "@faker-js/faker": "^8.4.1",
+    "@mmisty/cypress-allure-adapter": "^0.16.4",
+    "allure-commandline": "^2.27.0",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.3.0",
+    "mochawesome-report-generator": "^6.2.0"
   },
   "description": ""
 }
